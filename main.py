@@ -277,8 +277,10 @@ def pointcheck(ID,name):
 
 
 #環境変数取得
-YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
-YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
+YOUR_CHANNEL_ACCESS_TOKEN = 'kqe9SOh5ObwW7tmUHww+OawdLD90POBr6QYXWxYyJ2zkezVMIfVVO8aS0yW9kFPI+9QH/YCqpOZXrqjUuqn1WnrOgxM7H0L96CT0rL8XxFQF3qp21u6Yy2OVj+DJVkC4jhkdP39yvGV3Yh1YqbyLJAdB04t89/1O/w1cDnyilFU='
+#os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
+YOUR_CHANNEL_SECRET = 'effff0387a14d1def1aca27b6df82e89'
+#os.environ["YOUR_CHANNEL_SECRET"]
 
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
@@ -469,7 +471,7 @@ def handle_message(event):
         line_bot_api.reply_message(msg_from,TextSendMessage(text='OK！使うに設定したよ！\n次は行う人の名前を教えてね！(ニックネーム可)'))
 
 
-    if setting2[user_id]['setting2'] == True and user_id == setting_[user_id]['ID'] and ('' in msg_text):
+    '''if setting2[user_id]['setting2'] == True and user_id == setting_[user_id]['ID']:
         print('ok')
         setting2[user_id]['setting2'] = False
         setting2[user_id]['setting3'] = True
@@ -481,10 +483,10 @@ def handle_message(event):
         if setting_[user_id]['use'] == False:
             line_bot_api.reply_message(msg_from,TextSendMessage(text='OK！今までの合計ポイントは{}だよ！\n次は1分間に取得するポイント数を設定してね！'.format(point),quick_reply=items))
         if setting_[user_id]['use'] == True:
-            line_bot_api.reply_message(msg_from,TextSendMessage(text='OK！今までの合計ポイントは{}だよ！\n次は1分間に消費するポイント数を設定してね！'.format(point),quick_reply=items))
+            line_bot_api.reply_message(msg_from,TextSendMessage(text='OK！今までの合計ポイントは{}だよ！\n次は1分間に消費するポイント数を設定してね！'.format(point),quick_reply=items))'''
 
 
-    if setting2[user_id]['setting3'] == True and user_id == setting_[user_id]['ID'] and ('' in msg_text):
+    if setting2[user_id]['setting3'] == True and user_id == setting_[user_id]['ID']:
         setting2[user_id]['setting3'] = False
         setting2[user_id]['setting4'] = True
         str_timepoint = msg_text
@@ -578,7 +580,7 @@ def handle_message(event):
         setting2[user_id]['setting10'] = True
         pdate[user_id] = {'save': False,'date': '','point':'','name':''}
 
-    if setting2[user_id]['setting9'] == True or setting2[user_id]['setting10'] == True and ('' in msg_text):
+    if setting2[user_id]['setting9'] == True or setting2[user_id]['setting10'] == True:
         date = msg_text
         if setting2[user_id]['setting9'] == True:
             line_bot_api.reply_message(msg_from,TextSendMessage(text='{date}さんがしたんだね！\n\n次はやったことを教えてね！'.format(date=date)))
@@ -592,7 +594,7 @@ def handle_message(event):
             setting2[user_id]['setting6'] = True
 
 
-    if setting2[user_id]['setting5'] == True or setting2[user_id]['setting6'] == True and ('' in msg_text):
+    if setting2[user_id]['setting5'] == True or setting2[user_id]['setting6'] == True:
         date = msg_text
         items = {'items': [{'type': 'action','action': {'type': 'message','label': '5ポイント','text': '5'}},{'type': 'action','action': {'type': 'message','label': '10ポイント','text': '10'}},{'type': 'action','action': {'type': 'message','label': '20ポイント','text': '20'}},{'type': 'action','action': {'type': 'message','label': '50ポイント','text': '50'}}]}
         if setting2[user_id]['setting5'] == True:
@@ -606,7 +608,7 @@ def handle_message(event):
             setting2[user_id]['setting6'] = False
             setting2[user_id]['setting8'] = True
 
-    if setting2[user_id]['setting7'] == True or setting2[user_id]['setting8'] == True and ('' in msg_text):
+    if setting2[user_id]['setting7'] == True or setting2[user_id]['setting8'] == True:
         point = msg_text
         items = {'items': [{'type': 'action','action': {'type': 'message','label': '今までの記録を確認する','text': '記録確認'}}]}
         if setting2[user_id]['setting7'] == True:
@@ -642,10 +644,25 @@ def handle_message(event):
         date_str = '\n\n'.join(list3)
         line_bot_api.reply_message(msg_from,TextSendMessage(text='[今までの記録]\n{date_str}\n今の合計ポイント : {point}'.format(date_str=date_str,point=namecheck(user_id,name))))
 
+    else:
+        if setting2[user_id]['setting2'] == True and user_id == setting_[user_id]['ID']:
+            print('ok')
+            setting2[user_id]['setting2'] = False
+            setting2[user_id]['setting3'] = True
+            name = msg_text
+            setting_[user_id]['name'] = name
+            point = namecheck(user_id,name)
+            setting_[user_id]['point'] = point
+            items = {'items': [{'type': 'action','action': {'type': 'message','label': '10ポイント','text': '10'}},{'type': 'action','action': {'type': 'message','label': '20ポイント','text': '20'}},{'type': 'action','action': {'type': 'message','label': '50ポイント','text': '50'}},{'type': 'action','action': {'type': 'message','label': '100ポイント','text': '100'}}]}
+            if setting_[user_id]['use'] == False:
+                line_bot_api.reply_message(msg_from,TextSendMessage(text='OK！今までの合計ポイントは{}だよ！\n次は1分間に取得するポイント数を設定してね！'.format(point),quick_reply=items))
+            if setting_[user_id]['use'] == True:
+                line_bot_api.reply_message(msg_from,TextSendMessage(text='OK！今までの合計ポイントは{}だよ！\n次は1分間に消費するポイント数を設定してね！'.format(point),quick_reply=items))
+
 
 
 
 if __name__ == "__main__":
 #    app.run()
-    port = int(os.getenv("PORT"))
+    port =  int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
